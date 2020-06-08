@@ -42,10 +42,10 @@ bool uav1::init(std::string uavname)
   takeoff_pub= nh.advertise<std_msgs::Empty>(uavname + "/takeoff", 1);         // 发布 起飞命令
   land_pub   = nh.advertise<std_msgs::Empty>(uavname + "/land", 1);            // 发布 降落命令
   cmd_pub    = nh.advertise<geometry_msgs::Twist>(uavname + "/cmd_vel", 1);    // 发布 移动命令
-  receiveImage_sub = it.subscribe(uavname + "/image_raw",5,&uav1::receiveImage_cb,this);// 订阅 图像信息
+//  receiveImage_sub = it.subscribe(uavname + "/image_raw",5,&uav1::receiveImage_cb,this);// 订阅 图像信息
 
   //用于在gazebo仿真中测试
-//  receiveImage_sub = it.subscribe("iris_1/camera_Monocular/image_raw",5,&uav1::receiveImage_cb,this);
+  receiveImage_sub = it.subscribe("iris_1/camera_Monocular/image_raw",5,&uav1::receiveImage_cb,this);
 
   start();//开启线程 自动调用run()函数
 

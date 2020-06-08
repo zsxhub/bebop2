@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>730</width>
-    <height>452</height>
+    <width>1074</width>
+    <height>567</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,8 +26,8 @@
      <rect>
       <x>20</x>
       <y>0</y>
-      <width>341</width>
-      <height>441</height>
+      <width>521</width>
+      <height>301</height>
      </rect>
     </property>
     <property name="title">
@@ -86,147 +86,14 @@
       <string>uav1图像</string>
      </property>
     </widget>
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>280</y>
-       <width>201</width>
-       <height>161</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string/>
-     </property>
-     <widget class="QPushButton" name="uav1Takeoff_pBtn">
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>90</y>
-        <width>80</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>TakeOff</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="uav1Land_pBtn">
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>120</y>
-        <width>80</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Land</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="uav1Move_pBtn">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>120</y>
-        <width>80</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Move</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="uav1ShowImage_pBtn">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>90</y>
-        <width>80</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>启动节点</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="uav1Connect_pBtn">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>60</y>
-        <width>171</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Connect</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="uav1Name_cBox">
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>30</y>
-        <width>81</width>
-        <height>26</height>
-       </rect>
-      </property>
-      <item>
-       <property name="text">
-        <string>bebop1</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>bebop2</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>bebop3</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>bebop4</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>bebop5</string>
-       </property>
-      </item>
-     </widget>
-     <widget class="QLabel" name="label_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>33</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>请选择无人机</string>
-      </property>
-     </widget>
-    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_3">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>550</x>
       <y>0</y>
-      <width>341</width>
-      <height>441</height>
+      <width>531</width>
+      <height>301</height>
      </rect>
     </property>
     <property name="title">
@@ -288,9 +155,9 @@
     <widget class="QGroupBox" name="groupBox_4">
      <property name="geometry">
       <rect>
-       <x>60</x>
-       <y>280</y>
-       <width>201</width>
+       <x>330</x>
+       <y>30</y>
+       <width>191</width>
        <height>161</height>
       </rect>
      </property>
@@ -418,6 +285,185 @@
       </property>
      </widget>
     </widget>
+   </widget>
+   <widget class="QLabel" name="stitchingImage_label">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>300</y>
+      <width>640</width>
+      <height>240</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>36</pointsize>
+     </font>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="lineWidth">
+     <number>1</number>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="../resources/images.qrc">:/images/load.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+    <property name="margin">
+     <number>0</number>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_2">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>30</y>
+      <width>191</width>
+      <height>161</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <widget class="QPushButton" name="uav1Takeoff_pBtn">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>90</y>
+       <width>80</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>TakeOff</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="uav1Land_pBtn">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>120</y>
+       <width>80</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Land</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="uav1Move_pBtn">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>120</y>
+       <width>80</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Move</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="uav1ShowImage_pBtn">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>80</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>启动节点</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="uav1Connect_pBtn">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>171</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Connect</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="uav1Name_cBox">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>30</y>
+       <width>81</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>bebop1</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>bebop2</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>bebop3</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>bebop4</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>bebop5</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>33</y>
+       <width>81</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>请选择无人机</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QCheckBox" name="stitching_checkBox">
+    <property name="geometry">
+     <rect>
+      <x>780</x>
+      <y>320</y>
+      <width>81</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Stitching</string>
+    </property>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

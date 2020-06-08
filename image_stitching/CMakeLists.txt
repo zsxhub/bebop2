@@ -5,6 +5,7 @@
 cmake_minimum_required(VERSION 2.8.0)
 project(image_stitching)
 
+add_compile_options(-std=c++11)
 ##############################################################################
 # Catkin
 ##############################################################################
@@ -17,7 +18,10 @@ find_package(catkin REQUIRED COMPONENTS
 
     cv_bridge
     image_transport)
-include_directories(${catkin_INCLUDE_DIRS})
+
+find_package(OpenCV REQUIRED)
+
+include_directories(${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
 # Use this to define what the package will export (e.g. libs, headers).
 # Since the default here is to produce only a binary, we don't worry about
 # exporting anything. 
@@ -54,6 +58,8 @@ file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINK
 ##############################################################################
 
 add_executable(image_stitching ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
-target_link_libraries(image_stitching ${QT_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(image_stitching ${QT_LIBRARIES} ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 install(TARGETS image_stitching RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
+message(STATUS "opencv version: ${OpenCV_VERSION}")
+message(STATUS "opencv dir: ${OpenCV_INCLUDE_DIRS}")

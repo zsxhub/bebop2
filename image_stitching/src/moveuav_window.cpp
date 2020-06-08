@@ -15,7 +15,6 @@ moveUav::moveUav(int slelcet, QWidget *parent) :
   if(slelcet == 2)
     this->setWindowTitle("UAV2 control");
 
-
 }
 
 moveUav::~moveUav()

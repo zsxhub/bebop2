@@ -23,7 +23,7 @@
  * 0 --> 不运行bash命令
  * 1 --> 运行bash命令
  */
-#define runCommand 1
+#define runCommand 0
 
 namespace image_stitching {
 
@@ -202,8 +202,6 @@ void MainWindow::on_uav2Connect_pBtn_clicked()
                         + uav2Name
                         +"_node.launch'&";
   const char *command = str.c_str();
-
-
   system(command);
 #endif
 
