@@ -18,6 +18,7 @@
 #include "uav2_node.hpp"
 #include <QMutex>
 #include "moveuav_window.hpp"
+#include "stitching.hpp"
 /*****************************************************************************
 ** Namespace
 *****************************************************************************/
@@ -45,19 +46,24 @@ public:
   moveUav *moveUav1;
   moveUav *moveUav2;
 
+  stitching *imageStitching;
+
   QImage uav1Image;
   QImage uav2Image;
+  QImage stitchingImage;
   std::string uav1Name;
   std::string uav2Name;
 
   mutable QMutex uav1Image_mutex_;
   mutable QMutex uav2Image_mutex_;
+  mutable QMutex stitchingImage_mutex_;
 
 	void closeEvent(QCloseEvent *event); // Overloaded function
 	void showNoMasterMessage();
 
   void displayUav1Image(const QImage image);
   void displayUav2Image(const QImage image);
+  void displayStitchingImage(const QImage image);
 
 public Q_SLOTS:
 	/******************************************
@@ -66,6 +72,7 @@ public Q_SLOTS:
 
   void deal_showUav1ImageSignal(QImage image);
   void deal_showUav2ImageSignal(QImage image);
+  void deal_showStitchingImageSignal(QImage image);
 
   void on_uav1Takeoff_pBtn_clicked();
   void on_uav1Land_pBtn_clicked();

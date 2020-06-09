@@ -14,6 +14,9 @@
 #include <iostream>
 #include "../include/image_stitching/main_window.hpp"
 #include <QDebug>
+#include <QMetaType>
+
+
 /*****************************************************************************
 ** Namespaces
 *****************************************************************************/
@@ -43,12 +46,21 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
   moveUav1 = new moveUav(1);
   moveUav2 = new moveUav(2);
 
+  imageStitching = new stitching();
+
+  qRegisterMetaType< cv::Mat >("cv::Mat");
+
   QObject::connect(ui.actionAbout_Qt, SIGNAL(triggered(bool)), qApp, SLOT(aboutQt())); // qApp is a global variable for the application
   QObject::connect(&uav1Node, SIGNAL(rosShutdown()), this, SLOT(close()));
   QObject::connect(&uav1Node,SIGNAL(showUav1ImageSignal(QImage)),this,SLOT(deal_showUav1ImageSignal(QImage)));
   QObject::connect(&uav2Node, SIGNAL(rosShutdown()), this, SLOT(close()));
   QObject::connect(&uav2Node,SIGNAL(showUav2ImageSignal(QImage)),this,SLOT(deal_showUav2ImageSignal(QImage)));
 
+  QObject::connect(&uav1Node,SIGNAL(uav1RgbimageSignal(cv::Mat)),imageStitching,SLOT(deal_uav1RgbimageSignal(cv::Mat)));
+//  QObject::connect(&uav1Node,SIGNAL(uav1RgbimageSignal()),imageStitching,SLOT(deal_uav1RgbimageSignal()));
+
+  QObject::connect(imageStitching,SIGNAL(showStitchingImageSignal(QImage)),this,SLOT(deal_showStitchingImageSignal(QImage)));
+  //uav1 飞行控制
   QObject::connect(moveUav1,SIGNAL(forwardSignal(int,bool)),this,SLOT(deal_forwardSignal(int,bool)));
   QObject::connect(moveUav1,SIGNAL(backwardSignal(int,bool)),this,SLOT(deal_backwardSignal(int,bool)));
   QObject::connect(moveUav1,SIGNAL(flayLeftSignal(int,bool)),this,SLOT(deal_flayLeftSignal(int,bool)));
@@ -58,6 +70,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
   QObject::connect(moveUav1,SIGNAL(turnLeftSignal(int,bool)),this,SLOT(deal_turnLeftSignal(int,bool)));
   QObject::connect(moveUav1,SIGNAL(turnRightSignal(int,bool)),this,SLOT(deal_turnRightSignal(int,bool)));
 
+  //uav2 飞行控制
   QObject::connect(moveUav2,SIGNAL(forwardSignal(int,bool)),this,SLOT(deal_forwardSignal(int,bool)));
   QObject::connect(moveUav2,SIGNAL(backwardSignal(int,bool)),this,SLOT(deal_backwardSignal(int,bool)));
   QObject::connect(moveUav2,SIGNAL(flayLeftSignal(int,bool)),this,SLOT(deal_flayLeftSignal(int,bool)));
@@ -78,6 +91,8 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     ui.uav2Takeoff_pBtn->setEnabled(false);
     ui.uav2Move_pBtn->setEnabled(false);
     ui.uav2ShowImage_pBtn->setEnabled(false);
+
+//    imageStitching->start();
 }
 
 MainWindow::~MainWindow() {}
@@ -86,7 +101,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
   moveUav2->close();
   moveUav1->close();
+
+  imageStitching->quit();
+  imageStitching->wait();
   QMainWindow::closeEvent(event);
+
+  delete imageStitching;
 }
 
 /*****************************************************************************
@@ -100,6 +120,20 @@ void MainWindow::showNoMasterMessage() {
     close();
 }
 
+
+void MainWindow::deal_showStitchingImageSignal(QImage image)
+{
+  displayStitchingImage(image);
+}
+void MainWindow::displayStitchingImage(const QImage image)
+{
+  stitchingImage_mutex_.lock();
+  stitchingImage = image.copy();
+  ui.stitchingImage_label->setPixmap(QPixmap::fromImage(stitchingImage));
+//  ui.uav1Image_label->resize(ui.uav1Image_label->pixmap()->size());
+  stitchingImage_mutex_.unlock();
+
+}
 
 /*****************************  无人机1 *****************************/
 

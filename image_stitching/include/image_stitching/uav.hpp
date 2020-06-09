@@ -1,5 +1,6 @@
 #ifndef UAV_HPP
 #define UAV_HPP
+
 #ifndef Q_MOC_RUN
 #include <ros/ros.h>
 #include <opencv2/core/core.hpp>
@@ -55,3 +56,10 @@ public:
 };
 
 #endif // UAV_HPP
+
+
+
+
+
+
+
