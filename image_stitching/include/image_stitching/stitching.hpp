@@ -9,13 +9,16 @@
 #include <opencv2/features2d/features2d.hpp>
 #include <opencv2/calib3d/calib3d.hpp>
 
-#include <ros/ros.h>
+//#include <ros/ros.h>
 
 #endif
 
 #include <iostream>
 #include <QThread>
 #include <QImage>
+#include <QMutex>
+#include <QWaitCondition>
+#include <QTime>
 
 #include "myORBextractor.hpp"
 
@@ -27,6 +30,14 @@ class stitching : public QThread
 public:
   stitching();
 
+
+  /* 用于控制拼接进程 */
+  mutable QMutex stitching_mutex_;
+  QWaitCondition imageRecOK;
+
+  /* true --> 执行拼接程序 */
+  bool isStitching;
+  bool stitchingThreadStatue;
   typedef struct
   {
       cv::Point2f left_top;

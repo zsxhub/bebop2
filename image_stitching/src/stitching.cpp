@@ -14,24 +14,32 @@ stitching::stitching()
 {
   leftImageRec_flag = false;
   rightImageRec_flag = false;
+  isStitching = false;
+  stitchingThreadStatue = true;
 //  start();
 }
 
 
 void stitching::run()
 {
-  while (1) {
-//    std::cout << "thread running ok " << std::endl;
-    if(leftImageRec_flag == true)
+  while (stitchingThreadStatue) {
+
+    if(isStitching == true)
     {
+      stitching_mutex_.lock();
+
+      if(leftImageRec_flag == false)
+        imageRecOK.wait(&stitching_mutex_);
+      if(rightImageRec_flag == false)
+        imageRecOK.wait(&stitching_mutex_);
+
       leftImageRec_flag = false;
       rightImageRec_flag = false;
-//      stitchingImage = imageProcess(leftImage,rightImage);
-//      stitchingImage = leftImage;
+      stitchingImage = imageProcess(leftImage,rightImage);
       std::cout << "receive image ok " << std::endl;
       try
       {
-          cvtColor(leftImage, stitchingImage, CV_BGR2RGB);
+          cvtColor(stitchingImage, stitchingImage, CV_BGR2RGB);
           QImage ImageToQImage = QImage(stitchingImage.data,stitchingImage.cols,stitchingImage.rows,stitchingImage.step[0],QImage::Format_RGB888);
           Q_EMIT showStitchingImageSignal(ImageToQImage);
       }
@@ -39,7 +47,12 @@ void stitching::run()
       {
         std::cout << " stitchingImage could not convert " << std::endl;
       }
-
+      stitching_mutex_.unlock();
+    }
+    else
+    {
+      std::cout << "thread is running, isStitching = false " << std::endl;
+      msleep(500);
     }
 
   }
@@ -52,6 +65,8 @@ void stitching::deal_uav1RgbimageSignal(cv::Mat image)
   {
     cvtColor(image, leftImage, CV_RGB2BGR);
     leftImageRec_flag = true;
+    //唤醒拼接线程
+    imageRecOK.wakeAll();
 //    std::cout << "cvtColor ok " << std::endl;
   }
   catch(...)
@@ -66,6 +81,7 @@ void stitching::deal_uav2RgbimageSignal(cv::Mat image)
   {
     cvtColor(image, rightImage, CV_RGB2BGR);
     rightImageRec_flag = true;
+    imageRecOK.wakeAll();
   }
   catch(...)
   {

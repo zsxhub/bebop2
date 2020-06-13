@@ -57,9 +57,9 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
   QObject::connect(&uav2Node,SIGNAL(showUav2ImageSignal(QImage)),this,SLOT(deal_showUav2ImageSignal(QImage)));
 
   QObject::connect(&uav1Node,SIGNAL(uav1RgbimageSignal(cv::Mat)),imageStitching,SLOT(deal_uav1RgbimageSignal(cv::Mat)));
-//  QObject::connect(&uav1Node,SIGNAL(uav1RgbimageSignal()),imageStitching,SLOT(deal_uav1RgbimageSignal()));
-
+  QObject::connect(&uav2Node,SIGNAL(uav2RgbimageSignal(cv::Mat)),imageStitching,SLOT(deal_uav2RgbimageSignal(cv::Mat)));
   QObject::connect(imageStitching,SIGNAL(showStitchingImageSignal(QImage)),this,SLOT(deal_showStitchingImageSignal(QImage)));
+
   //uav1 飞行控制
   QObject::connect(moveUav1,SIGNAL(forwardSignal(int,bool)),this,SLOT(deal_forwardSignal(int,bool)));
   QObject::connect(moveUav1,SIGNAL(backwardSignal(int,bool)),this,SLOT(deal_backwardSignal(int,bool)));
@@ -92,7 +92,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     ui.uav2Move_pBtn->setEnabled(false);
     ui.uav2ShowImage_pBtn->setEnabled(false);
 
-//    imageStitching->start();
+    imageStitching->start();
 }
 
 MainWindow::~MainWindow() {}
@@ -102,6 +102,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
   moveUav2->close();
   moveUav1->close();
 
+  /* 关闭图像拼接进程 */
+  imageStitching->stitchingThreadStatue = false;
+  imageStitching->isStitching = false;
+  imageStitching->imageRecOK.wakeAll();
   imageStitching->quit();
   imageStitching->wait();
   QMainWindow::closeEvent(event);
@@ -322,5 +326,20 @@ void MainWindow::deal_turnRightSignal(int UAVx, bool state)
 }
 
 
+
+void MainWindow::on_stitching_checkBox_stateChanged(int arg1)
+{
+    if(ui.stitching_checkBox->isChecked() == true)
+    {
+      imageStitching->isStitching = true;
+    }
+    else
+    {
+      imageStitching->isStitching = false;
+    }
+}
+
 }  // namespace image_stitching
+
+
 

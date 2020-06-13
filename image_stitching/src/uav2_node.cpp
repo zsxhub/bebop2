@@ -42,10 +42,10 @@ bool uav2::init(std::string uavname)
   takeoff_pub= nh.advertise<std_msgs::Empty>(uavname + "/takeoff", 1);         // 发布 起飞命令
   land_pub   = nh.advertise<std_msgs::Empty>(uavname + "/land", 1);            // 发布 降落命令
   cmd_pub    = nh.advertise<geometry_msgs::Twist>(uavname + "/cmd_vel", 1);    // 发布 移动命令
-//  receiveImage_sub = it.subscribe(uavname + "/image_raw",5,&uav2::receiveImage_cb,this);// 订阅 图像信息
+  receiveImage_sub = it.subscribe(uavname + "/image_raw",5,&uav2::receiveImage_cb,this);// 订阅 图像信息
 
   //用于在gazebo仿真中测试
-  receiveImage_sub = it.subscribe("iris_2/camera_Monocular/image_raw",5,&uav2::receiveImage_cb,this);
+//  receiveImage_sub = it.subscribe("iris_2/camera_Monocular/image_raw",5,&uav2::receiveImage_cb,this);
 
   start();//开启线程 自动调用run()函数
 
@@ -91,6 +91,7 @@ void uav2::receiveImage_cb(const sensor_msgs::ImageConstPtr& msg)
     try
     {
         receiveImage = cv_bridge::toCvCopy(msg,sensor_msgs::image_encodings::RGB8)->image;
+        Q_EMIT uav2RgbimageSignal(receiveImage);
         ImageToQImage = QImage(receiveImage.data,receiveImage.cols,receiveImage.rows,receiveImage.step[0],QImage::Format_RGB888);
         Q_EMIT showUav2ImageSignal(ImageToQImage);
         receiveImageFlag = true ;

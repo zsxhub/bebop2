@@ -28,6 +28,7 @@ public:
 
 Q_SIGNALS://Qt信号
   void showUav2ImageSignal(QImage);
+  void uav2RgbimageSignal(cv::Mat);
   void rosShutdown();
 
 private:

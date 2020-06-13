@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1074</width>
-    <height>567</height>
+    <height>596</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -289,8 +289,8 @@
    <widget class="QLabel" name="stitchingImage_label">
     <property name="geometry">
      <rect>
-      <x>130</x>
-      <y>300</y>
+      <x>230</x>
+      <y>330</y>
       <width>640</width>
       <height>240</height>
      </rect>
@@ -310,7 +310,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="../resources/images.qrc">:/images/load.png</pixmap>
+     <pixmap resource="../resources/images.qrc">:/images/load1.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -455,14 +455,34 @@
    <widget class="QCheckBox" name="stitching_checkBox">
     <property name="geometry">
      <rect>
-      <x>780</x>
+      <x>880</x>
       <y>320</y>
-      <width>81</width>
+      <width>111</width>
       <height>24</height>
      </rect>
     </property>
     <property name="text">
      <string>Stitching</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>310</y>
+      <width>71</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>拼接图像</string>
     </property>
    </widget>
   </widget>

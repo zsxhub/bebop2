@@ -14,14 +14,13 @@
 
 #include <QtGui/QMainWindow>
 #include "ui_main_window.h"
+#include <QMutex>
+#include <QWaitCondition>
+
 #include "uav1_node.hpp"
 #include "uav2_node.hpp"
-#include <QMutex>
 #include "moveuav_window.hpp"
 #include "stitching.hpp"
-/*****************************************************************************
-** Namespace
-*****************************************************************************/
 
 namespace image_stitching {
 
@@ -54,9 +53,12 @@ public:
   std::string uav1Name;
   std::string uav2Name;
 
+  /*用来保护一个对象、数据结构、代码段、使得它们在同一一时刻，只有一个线程有访问权限*/
   mutable QMutex uav1Image_mutex_;
   mutable QMutex uav2Image_mutex_;
   mutable QMutex stitchingImage_mutex_;
+
+
 
 	void closeEvent(QCloseEvent *event); // Overloaded function
 	void showNoMasterMessage();
@@ -85,6 +87,8 @@ public Q_SLOTS:
   void on_uav2Connect_pBtn_clicked();
   void on_uav2Move_pBtn_clicked();
   void on_uav2ShowImage_pBtn_clicked();
+
+  void on_stitching_checkBox_stateChanged(int arg1);
 
   void deal_forwardSignal(int UAVx, bool state);
   void deal_backwardSignal(int UAVx, bool state);
