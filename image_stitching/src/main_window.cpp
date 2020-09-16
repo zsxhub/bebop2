@@ -26,7 +26,7 @@
  * 0 --> 不运行bash命令
  * 1 --> 运行bash命令
  */
-#define runCommand 0
+#define runCommand 1
 
 namespace image_stitching {
 

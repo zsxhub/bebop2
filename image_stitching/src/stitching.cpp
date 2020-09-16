@@ -168,8 +168,8 @@ cv::Mat stitching::imageProcess(cv::Mat img1, cv::Mat img2)
             good_matches.push_back(matches[i][0]);
         }
     }
-    cout << "matches:" << matches.size() << endl;
-    cout << "good_matches:" << good_matches.size() << endl;
+//    cout << "matches:" << matches.size() << endl;
+//    cout << "good_matches:" << good_matches.size() << endl;
 
     Mat img_goodmatch;
 //////    try{
@@ -248,8 +248,6 @@ void stitching::OptimizeSeam(cv::Mat& img1, cv::Mat& trans, cv::Mat& dst)
     int rows = dst.rows;
     int cols = img1.cols; //注意，是列数*通道数
     double alpha = 1;//img1中像素的权重
-    cout << "processWidth: " << processWidth << endl;
-    cout << "start: " << start << endl;
 
     for (int i = 0; i < rows; i++)
     {
