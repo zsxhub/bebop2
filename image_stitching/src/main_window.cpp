@@ -26,7 +26,7 @@
  * 0 --> 不运行bash命令
  * 1 --> 运行bash命令
  */
-#define runCommand 1
+#define runCommand 0
 
 namespace image_stitching {
 
@@ -40,24 +40,31 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	: QMainWindow(parent)
   , uav1Node(argc,argv)
   , uav2Node(argc,argv)
+  , uav3Node(argc,argv)
 {
 	ui.setupUi(this); // Calling this incidentally connects all ui's triggers to on_...() callbacks in this class.
 
   moveUav1 = new moveUav(1);
   moveUav2 = new moveUav(2);
+  moveUav3 = new moveUav(3);
 
   imageStitching = new stitching();
 
   qRegisterMetaType< cv::Mat >("cv::Mat");
 
   QObject::connect(ui.actionAbout_Qt, SIGNAL(triggered(bool)), qApp, SLOT(aboutQt())); // qApp is a global variable for the application
+
   QObject::connect(&uav1Node, SIGNAL(rosShutdown()), this, SLOT(close()));
   QObject::connect(&uav1Node,SIGNAL(showUav1ImageSignal(QImage)),this,SLOT(deal_showUav1ImageSignal(QImage)));
   QObject::connect(&uav2Node, SIGNAL(rosShutdown()), this, SLOT(close()));
   QObject::connect(&uav2Node,SIGNAL(showUav2ImageSignal(QImage)),this,SLOT(deal_showUav2ImageSignal(QImage)));
+  QObject::connect(&uav3Node, SIGNAL(rosShutdown()), this, SLOT(close()));
+  QObject::connect(&uav3Node,SIGNAL(showUav3ImageSignal(QImage)),this,SLOT(deal_showUav3ImageSignal(QImage)));
 
   QObject::connect(&uav1Node,SIGNAL(uav1RgbimageSignal(cv::Mat)),imageStitching,SLOT(deal_uav1RgbimageSignal(cv::Mat)));
   QObject::connect(&uav2Node,SIGNAL(uav2RgbimageSignal(cv::Mat)),imageStitching,SLOT(deal_uav2RgbimageSignal(cv::Mat)));
+  QObject::connect(&uav3Node,SIGNAL(uav3RgbimageSignal(cv::Mat)),imageStitching,SLOT(deal_uav3RgbimageSignal(cv::Mat)));
+
   QObject::connect(imageStitching,SIGNAL(showStitchingImageSignal(QImage)),this,SLOT(deal_showStitchingImageSignal(QImage)));
 
   //uav1 飞行控制
@@ -80,6 +87,17 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
   QObject::connect(moveUav2,SIGNAL(turnLeftSignal(int,bool)),this,SLOT(deal_turnLeftSignal(int,bool)));
   QObject::connect(moveUav2,SIGNAL(turnRightSignal(int,bool)),this,SLOT(deal_turnRightSignal(int,bool)));
 
+  //uav3 飞行控制
+  QObject::connect(moveUav3,SIGNAL(forwardSignal(int,bool)),this,SLOT(deal_forwardSignal(int,bool)));
+  QObject::connect(moveUav3,SIGNAL(backwardSignal(int,bool)),this,SLOT(deal_backwardSignal(int,bool)));
+  QObject::connect(moveUav3,SIGNAL(flayLeftSignal(int,bool)),this,SLOT(deal_flayLeftSignal(int,bool)));
+  QObject::connect(moveUav3,SIGNAL(flayRightSignal(int,bool)),this,SLOT(deal_flayRightSignal(int,bool)));
+  QObject::connect(moveUav3,SIGNAL(flayUpSignal(int,bool)),this,SLOT(deal_flayUpSignal(int,bool)));
+  QObject::connect(moveUav3,SIGNAL(flayDownSignal(int,bool)),this,SLOT(deal_flayDownSignal(int,bool)));
+  QObject::connect(moveUav3,SIGNAL(turnLeftSignal(int,bool)),this,SLOT(deal_turnLeftSignal(int,bool)));
+  QObject::connect(moveUav3,SIGNAL(turnRightSignal(int,bool)),this,SLOT(deal_turnRightSignal(int,bool)));
+
+
     uav1Name = "bebop4";//默认值
     ui.uav1Land_pBtn->setEnabled(false);
     ui.uav1Takeoff_pBtn->setEnabled(false);
@@ -92,6 +110,12 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     ui.uav2Move_pBtn->setEnabled(false);
     ui.uav2ShowImage_pBtn->setEnabled(false);
 
+    uav3Name = "bebop1";//默认值
+    ui.uav3Land_pBtn->setEnabled(false);
+    ui.uav3Takeoff_pBtn->setEnabled(false);
+    ui.uav3Move_pBtn->setEnabled(false);
+    ui.uav3ShowImage_pBtn->setEnabled(false);
+
     imageStitching->start();
 }
 
@@ -101,6 +125,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
   moveUav2->close();
   moveUav1->close();
+  moveUav3->close();
 
   /* 关闭图像拼接进程 */
   imageStitching->stitchingThreadStatue = false;
@@ -266,6 +291,68 @@ void MainWindow::on_uav2ShowImage_pBtn_clicked()
   }
 }
 
+/*****************************  无人机3 *****************************/
+
+void MainWindow::deal_showUav3ImageSignal(QImage image)
+{
+//  static int i=0;
+//  qDebug() << "deal_showUav1ImageSignal"<<i;
+//  i++;
+  displayUav3Image(image);
+}
+void MainWindow::displayUav3Image(const QImage image)
+{
+  uav3Image_mutex_.lock();
+  uav3Image = image.copy();
+  ui.uav3Image_label->setPixmap(QPixmap::fromImage(uav3Image));
+//  ui.uav3Image_label->resize(ui.uav3Image_label->pixmap()->size());
+  uav3Image_mutex_.unlock();
+}
+void MainWindow::on_uav3Takeoff_pBtn_clicked()
+{
+  uav3Node.takeoff();
+}
+
+void MainWindow::on_uav3Land_pBtn_clicked()
+{
+  uav3Node.land();
+}
+
+void MainWindow::on_uav3Connect_pBtn_clicked()
+{
+  uav3Name = ui.uav3Name_cBox->currentText().toStdString();
+
+#if runCommand
+  std::string str = "gnome-terminal -x bash -c 'roslaunch bebop_driver "
+                        + uav3Name
+                        +"_node.launch'&";
+  const char *command = str.c_str();
+  system(command);
+#endif
+
+  ui.uav3Takeoff_pBtn->setEnabled(true);
+  ui.uav3Land_pBtn->setEnabled(true);
+  ui.uav3Move_pBtn->setEnabled(true);
+  ui.uav3ShowImage_pBtn->setEnabled(true);
+}
+
+void MainWindow::on_uav3Move_pBtn_clicked()
+{
+  moveUav3->show();
+}
+
+void MainWindow::on_uav3ShowImage_pBtn_clicked()
+{
+  if ( !uav3Node.init(uav3Name) )
+  {
+    showNoMasterMessage();
+  }
+  else
+  {
+    ui.uav3ShowImage_pBtn->setEnabled(false);
+  }
+}
+
 /*****************************  控制无人机的移动 *****************************/
 void MainWindow::deal_forwardSignal(int UAVx, bool state)
 {
@@ -273,6 +360,8 @@ void MainWindow::deal_forwardSignal(int UAVx, bool state)
     uav1Node.forward = state;
   else if(UAVx == 2)
     uav2Node.forward = state;
+  else if(UAVx == 3)
+    uav3Node.forward = state;
 }
 void MainWindow::deal_backwardSignal(int UAVx, bool state)
 {
@@ -280,7 +369,8 @@ void MainWindow::deal_backwardSignal(int UAVx, bool state)
     uav1Node.backward = state;
   else if(UAVx == 2)
     uav2Node.backward = state;
-
+  else if(UAVx == 3)
+    uav3Node.backward = state;
 }
 void MainWindow::deal_flayLeftSignal(int UAVx, bool state)
 {
@@ -288,6 +378,8 @@ void MainWindow::deal_flayLeftSignal(int UAVx, bool state)
     uav1Node.flayLeft = state;
   else if(UAVx == 2)
     uav2Node.flayLeft = state;
+  else if(UAVx == 3)
+    uav3Node.flayLeft = state;
 }
 void MainWindow::deal_flayRightSignal(int UAVx, bool state)
 {
@@ -295,6 +387,8 @@ void MainWindow::deal_flayRightSignal(int UAVx, bool state)
     uav1Node.flayRight = state;
   else if(UAVx == 2)
     uav2Node.flayRight = state;
+  else if(UAVx == 3)
+    uav3Node.flayRight = state;
 }
 void MainWindow::deal_flayUpSignal(int UAVx, bool state)
 {
@@ -302,6 +396,8 @@ void MainWindow::deal_flayUpSignal(int UAVx, bool state)
     uav1Node.flayUp = state;
   else if(UAVx == 2)
     uav2Node.flayUp = state;
+  else if(UAVx == 3)
+    uav3Node.flayUp = state;
 }
 void MainWindow::deal_flayDownSignal(int UAVx, bool state)
 {
@@ -309,6 +405,8 @@ void MainWindow::deal_flayDownSignal(int UAVx, bool state)
     uav1Node.flayDown = state;
   else if(UAVx == 2)
     uav2Node.flayDown = state;
+  else if(UAVx == 3)
+    uav3Node.flayDown = state;
 }
 void MainWindow::deal_turnLeftSignal(int UAVx, bool state)
 {
@@ -316,6 +414,8 @@ void MainWindow::deal_turnLeftSignal(int UAVx, bool state)
     uav1Node.turnLeft = state;
   else if(UAVx == 2)
     uav2Node.turnLeft = state;
+  else if(UAVx == 3)
+    uav3Node.turnLeft = state;
 }
 void MainWindow::deal_turnRightSignal(int UAVx, bool state)
 {
@@ -323,6 +423,8 @@ void MainWindow::deal_turnRightSignal(int UAVx, bool state)
     uav1Node.turnRight = state;
   else if(UAVx == 2)
     uav2Node.turnRight = state;
+  else if(UAVx == 3)
+    uav3Node.turnRight = state;
 }
 
 

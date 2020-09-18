@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1074</width>
-    <height>596</height>
+    <width>1619</width>
+    <height>819</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -238,6 +238,9 @@
         <height>26</height>
        </rect>
       </property>
+      <property name="currentIndex">
+       <number>3</number>
+      </property>
       <item>
        <property name="text">
         <string>bebop1</string>
@@ -289,10 +292,10 @@
    <widget class="QLabel" name="stitchingImage_label">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>330</y>
-      <width>640</width>
-      <height>240</height>
+      <x>320</x>
+      <y>310</y>
+      <width>960</width>
+      <height>480</height>
      </rect>
     </property>
     <property name="font">
@@ -405,6 +408,9 @@
        <height>26</height>
       </rect>
      </property>
+     <property name="currentIndex">
+      <number>2</number>
+     </property>
      <item>
       <property name="text">
        <string>bebop1</string>
@@ -455,8 +461,8 @@
    <widget class="QCheckBox" name="stitching_checkBox">
     <property name="geometry">
      <rect>
-      <x>880</x>
-      <y>320</y>
+      <x>1300</x>
+      <y>310</y>
       <width>111</width>
       <height>24</height>
      </rect>
@@ -468,7 +474,7 @@
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>510</x>
+      <x>230</x>
       <y>310</y>
       <width>71</width>
       <height>18</height>
@@ -484,6 +490,208 @@
     <property name="text">
      <string>拼接图像</string>
     </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_5">
+    <property name="geometry">
+     <rect>
+      <x>1080</x>
+      <y>0</y>
+      <width>531</width>
+      <height>301</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <widget class="QLabel" name="uav3Image_label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>320</width>
+       <height>240</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>36</pointsize>
+      </font>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../resources/images.qrc">:/images/load.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+     <property name="margin">
+      <number>0</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_8">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>30</y>
+       <width>71</width>
+       <height>18</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>11</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>uav3图像</string>
+     </property>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_7">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>30</y>
+       <width>191</width>
+       <height>161</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string/>
+     </property>
+     <widget class="QPushButton" name="uav3Takeoff_pBtn">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>90</y>
+        <width>80</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TakeOff</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="uav3Land_pBtn">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>120</y>
+        <width>80</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Land</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="uav3Move_pBtn">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>120</y>
+        <width>80</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Move</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="uav3ShowImage_pBtn">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>90</y>
+        <width>80</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>启动节点</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="uav3Connect_pBtn">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>171</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Connect</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="uav3Name_cBox">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>30</y>
+        <width>81</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="currentIndex">
+       <number>4</number>
+      </property>
+      <item>
+       <property name="text">
+        <string>bebop1</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>bebop2</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>bebop3</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>bebop4</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>bebop5</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>33</y>
+        <width>81</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>请选择无人机</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
