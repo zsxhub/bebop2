@@ -65,17 +65,21 @@ void uav3::run()
 //        std::cout << "emit signals!!" << std::endl;
 //    }
     if(forward == true)   //前进
-      cmd(0.2,0,0);
+      cmd(0.15, 0, 0, 0);
     if(backward == true)  //后退
-      cmd(-0.2,0,0);
+      cmd(-0.15, 0, 0, 0);
     if(flayLeft == true)  //左飞
-      cmd(0,0.2,0);
+      cmd(0, 0.15, 0, 0);
     if(flayRight == true) //右飞
-      cmd(0,-0.2,0);
+      cmd(0, -0.15, 0, 0);
     if(flayUp == true)    //上升
-      cmd(0,0,0.1);
+      cmd(0, 0, 0.1, 0);
     if(flayDown == true)  //下降
-      cmd(0,0,-0.1);
+      cmd(0, 0, -0.1, 0);
+    if(turnLeft == true)  //左转
+      cmd(0, 0, 0, -1);
+    if(turnRight == true) //右转
+      cmd(0, 0, 0, 1);
 
     ros::spinOnce();
     loop_rate.sleep();

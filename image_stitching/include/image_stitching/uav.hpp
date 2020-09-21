@@ -51,7 +51,7 @@ public:
 
   void takeoff();
   void land();
-  void cmd(float x,float y,float z);
+  void cmd(float x,float y,float z,float yaw);
   void state_cb(const nav_msgs::Odometry::ConstPtr& msg);
 };
 
